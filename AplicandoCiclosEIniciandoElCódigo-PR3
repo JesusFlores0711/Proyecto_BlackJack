@@ -1,0 +1,70 @@
+#include <iostream>
+#include <random>
+#include <string>
+
+
+int player = 0;
+int dealer = 0;
+std::string playerMessage = "Las cartas del jugador son: ";
+std::string dealerMessage = "Las cartas del dealer son: ";
+int cards[52];
+
+void createDeck() {
+    int cardValue = 2;
+    int cardCount = 0;
+    for (int figure = 1; figure <= 4; figure++) {
+        for (int card = 1; card <= 13; card++) {
+            switch (card) {
+                case 10:
+                case 11:
+                case 12:
+                    cardValue = 10;
+                break;
+                case 13:
+                    cardValue = 11;
+                break;
+                default:
+                    break;
+            }
+            cards[cardCount] = cardValue;
+            cardCount++;
+            cardValue++;
+        }
+        cardValue = 2;
+    }
+}
+
+int drawCard() {
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<int> dist(1, 52);
+    int card = dist(gen);
+    return cards[card - 1];
+}
+
+void initGame() {
+    player = drawCard() + drawCard();
+    dealer = drawCard() + drawCard();
+
+    std::cout << playerMessage << player << std::endl;
+    std::cout << dealerMessage << dealer << std::endl;
+}
+
+void checkWinner() {
+    if (player == 21) {
+        std::cout << "Ganaste!" << std::endl;
+    } else if (player > dealer && player <= 21) {
+        std::cout << "Ganaste!" << std::endl;
+    } else if (player == dealer) {
+        std::cout << "Empate!" << std::endl;
+    } else {
+        std::cout << "Perdiste!" << std::endl;
+    }
+}
+
+int main() {
+    createDeck();
+    initGame();
+    checkWinner();
+    return 0;
+}
