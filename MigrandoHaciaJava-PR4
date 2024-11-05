@@ -1,0 +1,56 @@
+import java.util.Random;
+
+public class Main {
+    private static int player = 0;
+    private static int dealer = 0;
+    private static int[] cards = new int[52];
+
+    public static void main(String[] args) {
+        createDeck();
+        initGame();
+        checkWinner();
+    }
+
+    private static void createDeck() {
+        int cardValue = 2;
+        int cardCount = 0;
+        for (int figure = 1; figure <= 4; figure++) {
+            for (int card = 1; card <= 13; card++) {
+                switch (card) {
+                    case 10, 11, 12 -> cardValue = 10;
+                    case 13 -> cardValue = 11;
+                    default -> {}
+                }
+                cards[cardCount] = cardValue;
+                cardCount++;
+                cardValue++;
+            }
+            cardValue = 2;
+        }
+    }
+
+    private static int drawCard() {
+        Random random = new Random();
+        int card = random.nextInt(52);
+        return cards[card];
+    }
+
+    private static void initGame() {
+        player = drawCard() + drawCard();
+        dealer = drawCard() + drawCard();
+        System.out.println("Las cartas del jugador son: " + player);
+        System.out.println("Las cartas del dealer son: " + dealer);
+    }
+
+    private static void checkWinner() {
+        if (player == 21) {
+            System.out.println("Ganaste!");
+        } else if (player > dealer && player <= 21) {
+            System.out.println("Ganaste!");
+        } else if (player == dealer) {
+            System.out.println("Empate!");
+        } else {
+            System.out.println("Perdiste!");
+        }
+    }
+}
